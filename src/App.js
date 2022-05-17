@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { Login } from "./components/Login";
+import { PublicRoute } from "./routes/PublicRoute";
+import { PrivateRoute } from "./routes/PrivateRoute";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
+import { useSelector } from 'react-redux';
 
 function App() {
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <PublicRoute path="/login" isAuth={isAuth}>
+          <Login/>
+        </PublicRoute>
+        <PrivateRoute path="/" isAuth={isAuth}>
+          <ProtectedRoutes/>
+        </PrivateRoute>
+      </Switch>
+    </Router>    
   );
 }
 
